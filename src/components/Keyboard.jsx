@@ -17,10 +17,14 @@ export default function Keyboard(props) {
     return (
       <button
         key={keypad}
+        disabled={props.isGameOver}
         className={clsx("btn-key", {
           "btn-true": isGuessed && isCorrect,
           "btn-false": isGuessed && !isCorrect,
+          "btn-disabled": props.isGameOver,
         })}
+        aria-disabled={props.isGameOver}
+        aria-label={`Letter ${keypad}`}
         onClick={() => handleButton(keypad)}
       >
         {keypad}

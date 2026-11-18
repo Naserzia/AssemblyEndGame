@@ -16,24 +16,35 @@ function App() {
   const wrongGuessCount = userGuess.filter(
     letter => !currentGuess.toLowerCase().includes(letter.toLowerCase()),
   ).length;
+
+  const lastGuess = userGuess[userGuess.length - 1];
+  const isLastGuessWrong =
+    lastGuess && !currentGuess.toLowerCase().includes(lastGuess.toLowerCase());
+
   const isGameLost = wrongGuessCount === languages.length - 1;
   const isGameWon = [...currentGuess.toLowerCase()].every(letter =>
     userGuess.includes(letter),
   );
   const isGameOver = isGameLost || isGameWon;
 
-  console.log(isGameOver);
   return (
     <div className="container">
       <Header />
       <main>
-        <GameStatus isGameLost={isGameLost} isGameWon={isGameWon} />
+        <GameStatus
+          isGameLost={isGameLost}
+          isGameWon={isGameWon}
+          isGameOver={isGameOver}
+          wrongGuessCount={wrongGuessCount}
+          isLastGuessWrong={isLastGuessWrong}
+        />
         <LanguageBadges wrongGuessCount={wrongGuessCount} />
         <WordDisplay currentGuess={currentGuess} userGuess={userGuess} />
         <Keyboard
           currentGuess={currentGuess}
           userGuess={userGuess}
           setUserGuess={setUserGuess}
+          isGameOver={isGameOver}
         />
         <Button isGameOver={isGameOver} />
       </main>
