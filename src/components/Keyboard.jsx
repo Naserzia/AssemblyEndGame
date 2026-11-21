@@ -1,36 +1,33 @@
 import clsx from "clsx";
 
-export default function Keyboard(props) {
-  function handleButton(letter) {
-    props.setUserGuess(previousState =>
-      previousState.includes(letter)
-        ? previousState
-        : [...previousState, letter],
-    );
-  }
-  const alphabet = "abcdefghijklmnopqrstuvwxyz";
+const ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
-  const keyboardElement = alphabet.split("").map(keypad => {
-    const isGuessed = props.userGuess.includes(keypad);
-    const isCorrect = props.currentGuess.includes(keypad);
+export default function Keyboard({
+  targetWord,
+  guessedLetters,
+  onGuessLetter,
+  isGameOver,
+}) {
+  const keyboardKeys = ALPHABET.split("").map(letter => {
+    const isGuessed = guessedLetters.includes(letter);
+    const isCorrect = targetWord.includes(letter);
 
     return (
       <button
-        key={keypad}
-        disabled={props.isGameOver}
+        key={letter}
+        disabled={isGameOver}
         className={clsx("btn-key", {
           "btn-true": isGuessed && isCorrect,
           "btn-false": isGuessed && !isCorrect,
-          "btn-disabled": props.isGameOver,
+          "btn-disabled": isGameOver,
         })}
-        aria-disabled={props.isGameOver}
-        aria-label={`Letter ${keypad}`}
-        onClick={() => handleButton(keypad)}
+        aria-label={`Letter ${letter}`}
+        onClick={() => onGuessLetter(letter)}
       >
-        {keypad}
+        {letter}
       </button>
     );
   });
 
-  return <section className="keyboard">{keyboardElement}</section>;
+  return <section className="keyboard">{keyboardKeys}</section>;
 }

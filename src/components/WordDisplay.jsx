@@ -1,51 +1,50 @@
 import clsx from "clsx";
 
 export default function WordDisplay({
-  currentGuess,
-  userGuess,
-  numGuessesLeft,
-  lastGuess,
-  isGameLost
+  targetWord,
+  guessedLetters,
+  remainingAttempts,
+  latestGuess,
+  isLost,
 }) {
-  const wordArray = Array.from(currentGuess);
-  const revealMissingWordIfLost = isGameLost;
+  const wordLetters = Array.from(targetWord);
 
-  const displayArray = wordArray.map((letter, index) => (
-    <span
-      key={index}
-      className={clsx("current-letter", {
-        "missed-letter": revealMissingWordIfLost && !userGuess.includes(letter),
-      })}
-    >
-      {userGuess.includes(letter) || revealMissingWordIfLost ? letter : ""}
-    </span>
-  ));
+  const displayedLetters = wordLetters.map((letter, index) => {
+    const wasGuessed = guessedLetters.includes(letter);
+    const shouldRevealLetter = wasGuessed || isLost;
+
+    return (
+      <span
+        key={index}
+        className={clsx("word-letter", {
+          "revealed-letter": isLost && !wasGuessed,
+        })}
+      >
+        {shouldRevealLetter ? letter : ""}
+      </span>
+    );
+  });
 
   return (
     <>
-
-
-
-
-
-      <section className="display-word">{displayArray}</section>
-
-
-
-
-
+      <section className="display-word">{displayedLetters}</section>
       <section className="sr-only" aria-live="polite" role="status">
-        <p>
-          {currentGuess.includes(lastGuess)
-            ? `Correct! The letter ${lastGuess} is in the word.`
-            : `Sorry, the letter ${lastGuess} is not in the word.`}
-          You have {numGuessesLeft} attempt left.
-        </p>
+        {latestGuess && (
+          <p>
+            {targetWord.includes(latestGuess)
+              ? `Correct! The letter ${latestGuess} is in the word.`
+              : `Sorry, the letter ${latestGuess} is not in the word.`}
+            You have {remainingAttempts}{" "}
+            {remainingAttempts === 1 ? "attempt" : "attempts"} left.
+          </p>
+        )}
         <p>
           Current Word:{" "}
-          {currentGuess
-            .split("")
-            .map(letter => (userGuess.includes(letter) ? letter : "blank"))}
+          {wordLetters
+            .map(letter =>
+              guessedLetters.includes(letter) || isLost ? letter : "blank",
+            )
+            .join(" ")}
         </p>
       </section>
     </>

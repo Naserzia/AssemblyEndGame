@@ -1,6 +1,6 @@
 import { words } from "../../data/words";
 
-export function getFarewellText(language) {
+export function getFarewellMessage(language) {
   const options = [
     `Farewell, ${language}`,
     `Adios, ${language}`,
@@ -20,7 +20,7 @@ export function getFarewellText(language) {
   return options[randomIndex];
 }
 
-export function getRandomWord() {
+export function getRandomTargetWord() {
   const randomIndex = Math.floor(Math.random() * words.length);
   return words[randomIndex];
 }

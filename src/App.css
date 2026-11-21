@@ -146,7 +146,7 @@ section.game-lost {
   gap: 5px;
 }
 
-.current-letter {
+.word-letter {
   width: 40px;
   height: 40px;
   padding: 6px;
@@ -165,7 +165,7 @@ section.game-lost {
   border-bottom: 1px solid var(--text-title);
 }
 
-.missed-letter {
+.revealed-letter {
   color: var(--bg-fail);
 }
 
